@@ -1,0 +1,64 @@
+type Client {
+    id: ID!
+    last_name: String!
+    first_name: String!
+    phone_number: String!
+    front_cnib_photo: String!
+    back_cnib_photo: String
+    selfie_with_cnib: String
+    cnib_number: String!
+    issue_date: Date!
+    expiry_date: Date!
+    secondary_phone: String
+    birth_date: Date!
+    birth_place: String!
+    issue_place: String!
+    transactions: [Transaction!]! @hasMany
+}
+
+extend type Query {
+    # Fetch all clients
+    clients: [Client] @all
+
+    # Fetch a single client by their ID
+    client(id: ID!): Client @find
+}
+
+extend type Mutation {
+    createClient(
+        last_name: String!
+        first_name: String!
+        phone_number: String!
+        cnib_number: String!
+        issue_date: Date!
+        expiry_date: Date!
+        secondary_phone: String
+        birth_date: Date!
+        birth_place: String!
+        issue_place: String!
+        front_cnib_photo: Upload
+        back_cnib_photo: Upload
+        selfie_with_cnib: Upload
+        orange_money_password: String! # Accept input for Orange Money password
+    ): Client @field(resolver: "App\\GraphQL\\Mutations\\ClientMutations@createClientWithImages")
+
+    updateClient(
+        id: ID!
+        last_name: String
+        first_name: String
+        phone_number: String
+        cnib_number: String
+        issue_date: Date
+        expiry_date: Date
+        secondary_phone: String
+        birth_date: Date
+        birth_place: String
+        issue_place: String
+        front_cnib_photo: Upload
+        back_cnib_photo: Upload
+        selfie_with_cnib: Upload
+        orange_money_password: String # Allow updating the password
+    ): Client @field(resolver: "App\\GraphQL\\Mutations\\ClientMutations@updateClientWithImages")
+
+    deleteClient(id: ID!): Client @delete
+}

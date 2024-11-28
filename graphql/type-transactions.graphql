@@ -1,0 +1,29 @@
+type TypeTransaction {
+    id: ID!
+    name: String! # Name of the transaction type
+    transactions: [Transaction!]! @hasMany # Transactions associated with this type
+}
+
+extend type Query {
+    # Fetch all transaction types
+    typeTransactions: [TypeTransaction] @all
+
+    # Fetch a single transaction type by its ID
+    typeTransaction(id: ID!): TypeTransaction @find
+}
+
+extend type Mutation {
+    # Create a new transaction type
+    createTypeTransaction(
+        name: String! # Name of the transaction type
+    ): TypeTransaction @create
+
+    # Update an existing transaction type
+    updateTypeTransaction(
+        id: ID! # ID of the transaction type to update
+        name: String # Updated name of the transaction type
+    ): TypeTransaction @update
+
+    # Delete a transaction type by its ID
+    deleteTypeTransaction(id: ID!): TypeTransaction @delete
+}

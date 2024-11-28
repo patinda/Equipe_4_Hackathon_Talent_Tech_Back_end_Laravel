@@ -1,0 +1,35 @@
+type Transaction {
+    id: ID!
+    date: Date! # Date of the transaction
+    transaction_amount: Float! # Amount of the transaction
+    client: Client! @belongsTo # The client associated with the transaction
+    typeTransaction: TypeTransaction! @belongsTo # The type of the transaction
+}
+
+extend type Query {
+    # Fetch all transactions
+    transactions: [Transaction] @all
+
+    # Fetch a single transaction by its ID
+    transaction(id: ID!): Transaction @find
+}
+
+extend type Mutation {
+    # Create a new transaction
+    createTransaction(
+        client_id: ID! # ID of the client associated with the transaction
+        date: Date! # Date of the transaction
+        type_transaction_id: ID! # ID of the type of transaction
+    ): Transaction @create
+
+    # Update an existing transaction
+    updateTransaction(
+        id: ID! # ID of the transaction to update
+        client_id: ID # Updated client ID
+        date: Date # Updated date of the transaction
+        type_transaction_id: ID # Updated transaction type ID
+    ): Transaction @update
+
+    # Delete a transaction by its ID
+    deleteTransaction(id: ID!): Transaction @delete
+}
